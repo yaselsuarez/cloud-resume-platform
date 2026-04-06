@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  cloud-resume-api:
+    image: yaselsuarez/cloud-resume-api:latest
+    container_name: cloud-resume-api
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
