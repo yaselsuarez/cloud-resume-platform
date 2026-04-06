@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-resume-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-resume-api
+  template:
+    metadata:
+      labels:
+        app: cloud-resume-api
+    spec:
+      containers:
+      - name: cloud-resume-api
+        image: yaselsuarez/cloud-resume-api
+        #imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+
+        # liveness → “si muere, se reinicia”
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+        # readiness → “si no está listo, no lo usa”
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
