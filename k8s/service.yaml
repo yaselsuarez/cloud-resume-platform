@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: cloud-resume-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: cloud-resume-api
   ports:
     - protocol: TCP
-      port: 3000 # Puerto del servicio
+      port: 80 # Puerto del servicio
       targetPort: 3000 # Puerto del contenedor
-      nodePort: 30007 # Puerto externo hacia la red
