@@ -3,16 +3,18 @@ kind: Ingress
 metadata:
   name: cloud-resume-ingress
   annotations:
-    traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
-    cert-manager.io/cluster-issuer: selfsigned-issuer   # 👈 AQUÍ SE CONECTA CON CERT-MANAGER PARA HTTPs
+    cert-manager.io/cluster-issuer: letsencrypt-prod   # 👈 AQUÍ SE CONECTA CON CERT-MANAGER PARA HTTPs (LET´S ENCRYPT)
 spec:
+  ingressClassName: traefik
   tls:
-    - hosts: # Indica a que host se le aplicará TLS (HTTPs)
-        - api1.home
-        - api2.home
+    # Define los hosts incluidos en el certificado TLS (HTTPS)
+    # emitido por cert-manager y usado por este Ingress          
+    - hosts:
+        - api1.home.mooo.com
+        - api2.home.mooo.com
       secretName: cloud-resume-tls   # 👈 cert-manager creará este secret
   rules:
-  - host: api1.home
+  - host: api1.home.mooo.com
     http:
       paths:
       - path: /
@@ -22,7 +24,7 @@ spec:
             name: cloud-resume-service
             port:
               number: 80
-  - host: api2.home
+  - host: api2.home.mooo.com
     http:
       paths:
       - path: /
