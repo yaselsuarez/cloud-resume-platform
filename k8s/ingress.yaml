@@ -4,7 +4,13 @@ metadata:
   name: cloud-resume-ingress
   annotations:
     traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+    cert-manager.io/cluster-issuer: selfsigned-issuer   # 👈 AQUÍ SE CONECTA CON CERT-MANAGER PARA HTTPs
 spec:
+  tls:
+    - hosts: # Indica a que host se le aplicará TLS (HTTPs)
+        - api1.home
+        - api2.home
+      secretName: cloud-resume-tls   # 👈 cert-manager creará este secret
   rules:
   - host: api1.home
     http:
