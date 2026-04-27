@@ -1,6 +1,6 @@
 name: CI/CD Cloud Resume Platform
 
-on:
+on: 
   push:
     branches: [ "master" ]
 
@@ -12,17 +12,27 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    # Paso para clonar el código del repositorio en la máquina virtual de GitHub Actions
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Paso para iniciar sesión en el registro de contenedores de GitHub utilizando un token secreto
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      # Paso para obtener la etiqueta de versión actual basada en el SHA del commit actual y almacenarla como una variable de entorno
+      - name: Obtener etiqueta de la versión actual
+        id: get_tag
+        run: |
+          echo "VERSION=$GITHUB_SHA" >> $GITHUB_ENV
+
+      # Paso para construir la imagen del contenedor utilizando el Dockerfile en la carpeta 'backend' y etiquetarla con la versión actual
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/cloud-resume-api:latest backend
+          docker build -t ghcr.io/${{ github.repository }}/cloud-resume-api:${{ env.VERSION }} backend
 
+      # Paso para enviar (push) la imagen de contenedor construida al registro de contenedores de GitHub
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ github.repository }}/cloud-resume-api:latest
+          docker push ghcr.io/${{ github.repository }}/cloud-resume-api:${{ env.VERSION }}

@@ -81,8 +81,8 @@ Preparado para CI/CD (fase futura)
 ✔ Docker completado
 ✔ Kubernetes completado
 ✔ Ingress configurado
-🟡 HTTPS (fase siguiente)
-🟡 CI/CD (pendiente)
+✔ HTTPS completado
+✔ CI/CD completado
 🟡 Monitorización (pendiente)
 
 🎯 Objetivo
